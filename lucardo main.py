@@ -1,8 +1,8 @@
-# This example requires the 'members' and 'message_content' privileged intents to function.
-
 import discord
 from discord.ext import commands
 import random
+import os
+import requests
 
 description = '''An example bot to showcase the discord.ext.commands extension
 module.
@@ -22,58 +22,17 @@ async def on_ready():
     print('------')
 
 
-@bot.command()
-async def add(ctx, left: int, right: int):
-    """Adds two numbers together."""
-    await ctx.send(left + right)
+ideas_ecologicas = ["Utiliza el transporte público. Nos hemos acostumbrado a utilizar el coche para todo, pero es hora de pensar en el planeta y en nuestro futuro y de usar medios de transporte más sostenibles y respetuosos con el medioambiente. El transporte público es una buena solución, más barata y menos contaminante que el coche."
+                    ,"Reduce, reutiliza y recicla: Minimiza tu consumo de productos desechables y trata de reutilizar o reciclar tanto como sea posible. (para dejarlo simple)"
+                    ,"Recoger, separar y eliminar los residuos de forma segura para proteger la tierra y el agua, fomentar la reducción de sustancias nocivas para el medio ambiente y fomentar el reciclaje por parte de los ciudadanos y las empresas."
+                    ,"Educación y concienciación: Comparte información sobre la importancia de cuidar el medio ambiente con amigos, familiares para crear conciencia sobre la importancia de la sostenibilidad"]
 
-
-@bot.command()
-async def roll(ctx, dice: str):
-    """Rolls a dice in NdN format."""
-    try:
-        rolls, limit = map(int, dice.split('d'))
-    except Exception:
-        await ctx.send('Format has to be in NdN!')
-        return
-
-    result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
-    await ctx.send(result)
 
 
 @bot.command(description='For when you wanna settle the score some other way')
-async def choose(ctx, *choices: str):
+async def consejo_ecologico(ctx, *choices: str):
     """Chooses between multiple choices."""
-    await ctx.send(random.choice(choices))
+    await ctx.send(random.choice(ideas_ecologicas))
+    
 
-
-@bot.command()
-async def repeat(ctx, times: int, content='repeating...'):
-    """Repeats a message multiple times."""
-    for i in range(times):
-        await ctx.send(content)
-
-
-@bot.command()
-async def joined(ctx, member: discord.Member):
-    """Says when a member joined."""
-    await ctx.send(f'{member.name} joined {discord.utils.format_dt(member.joined_at)}')
-
-
-@bot.group()
-async def cool(ctx):
-    """Says if a user is cool.
-
-    In reality this just checks if a subcommand is being invoked.
-    """
-    if ctx.invoked_subcommand is None:
-        await ctx.send(f'No, {ctx.subcommand_passed} is not cool')
-
-
-@cool.command(name='bot')
-async def _bot(ctx):
-    """Is the bot cool?"""
-    await ctx.send('Yes, the bot is cool.')
-
-
-bot.run("your token")
+bot.run("token")
